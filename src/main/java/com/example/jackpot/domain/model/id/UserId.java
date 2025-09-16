@@ -20,7 +20,7 @@ public final class UserId {
 
     public static UserId of(String value) {
         isNotNull(value, () -> new InvalidUserIdException("value must not be null"));
-        
+
         isTrue(!value.isBlank(), () -> new InvalidUserIdException("value must not be blank"));
         isTrue(value.length() == 36, () -> new InvalidUserIdException("value has to be 36 characters"));
 

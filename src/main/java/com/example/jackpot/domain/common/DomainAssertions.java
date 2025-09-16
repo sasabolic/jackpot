@@ -17,15 +17,15 @@ public final class DomainAssertions {
         }
     }
 
-    public static void isTrue(boolean condition, Supplier<? extends RuntimeException> exSupplier) {
+    public static void isTrue(boolean condition, Supplier<? extends RuntimeException> exceptionSupplier) {
         if (!condition) {
-            throw exSupplier.get();
+            throw exceptionSupplier.get();
         }
     }
 
-    public static void isNotNull(Object obj, Supplier<? extends RuntimeException> exSupplier) {
+    public static void isNotNull(Object obj, Supplier<? extends RuntimeException> exceptionSupplier) {
         if (obj == null) {
-            throw exSupplier.get();
+            throw exceptionSupplier.get();
         }
     }
 }

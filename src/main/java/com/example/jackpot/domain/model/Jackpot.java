@@ -46,6 +46,7 @@ public final class Jackpot {
 
         isTrue(bet.jackpotId().equals(this.jackpotId), "bet targets another jackpot");
         isTrue(bet.betAmount().hasSameCurrencyAs(this.currentPool), "betAmount currency must equal jackpot currency");
+        isTrue(bet.betAmount().isPositive(), "betAmount must be positive");
 
         Money contribution = contributionCalculator.calculate(new ContributionContext(bet.betAmount(), this.currentPool, this.initialPool));
 
@@ -87,6 +88,4 @@ public final class Jackpot {
     public Money currentPool() {
         return this.currentPool;
     }
-
-
 }
