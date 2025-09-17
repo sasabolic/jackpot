@@ -1,4 +1,3 @@
-// adapters/jpa/mapper/MoneyMapper.java
 package com.example.jackpot.adapter.out.persistence.jpa.mapper;
 
 import com.example.jackpot.adapter.out.persistence.jpa.entity.MoneyEmbeddable;

@@ -21,16 +21,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
-class JackpotContributionAdapterTest {
+class JackpotContributionRepositoryAdapterTest {
 
     @Mock
     private ContributionJpaRepository repository;
 
-    private JackpotContributionAdapter adapter;
+    private JackpotContributionRepositoryAdapter adapter;
 
     @BeforeEach
     void setUp() {
-        adapter = new JackpotContributionAdapter(repository);
+        adapter = new JackpotContributionRepositoryAdapter(repository);
     }
 
     @Test

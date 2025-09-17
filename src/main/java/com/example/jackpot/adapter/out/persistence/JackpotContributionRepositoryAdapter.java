@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class JackpotContributionAdapter implements JackpotContributionRepository {
+public class JackpotContributionRepositoryAdapter implements JackpotContributionRepository {
 
     private final ContributionJpaRepository repository;
 

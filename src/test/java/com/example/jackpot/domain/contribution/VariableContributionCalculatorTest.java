@@ -137,7 +137,6 @@ class VariableContributionCalculatorTest {
                 DecayFactor.of(decay)
         );
 
-        // Build context: current = initial + Δ
         Money initial = Money.of("100.00", "EUR");
         Money current = initial.plus(Money.of(delta, "EUR"));
         ContributionContext ctx = new ContributionContext(Money.of(bet, "EUR"), current, initial);
