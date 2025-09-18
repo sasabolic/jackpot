@@ -39,33 +39,11 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	testImplementation 'io.github.hakky54:logcaptor:2.12.1'
+
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-// TODO Delete...
-// ---------------------------------------------------
-// Code analysis configuration
-// ---------------------------------------------------
-
-jacocoTestReport {
-	reports {
-		xml.required.set(true)
-	}
-}
-
-test.finalizedBy jacocoTestReport
-
-sonarqube {
-	properties {
-		property "sonar.projectKey", "jackpot"
-		property "sonar.projectName", "Jackpot"
-		property "sonar.host.url", "http://localhost:9000"
-		property "sonar.token", "sqp_d23672748fd46698a2dd7aa90088df8d0b33ccc8"  // or your SonarQube token
-		property "sonar.java.binaries", "build/classes/java/main"
-		property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
-	}
 }
