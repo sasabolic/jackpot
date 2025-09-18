@@ -1,5 +1,6 @@
 package com.example.jackpot.application.service;
 
+import com.example.jackpot.application.in.BetProcessingService;
 import com.example.jackpot.application.out.JackpotContributionRepository;
 import com.example.jackpot.application.out.JackpotRepository;
 import com.example.jackpot.application.out.JackpotRewardRepository;
@@ -41,7 +42,7 @@ class DefaultBetProcessingServiceTest {
     @Mock
     private JackpotRewardRepository rewardRepository;
 
-    private DefaultBetProcessingService service;
+    private BetProcessingService service;
 
     @BeforeEach
     void setUp() {
@@ -111,15 +112,17 @@ class DefaultBetProcessingServiceTest {
                 Money.of("105.00", "EUR")
         );
 
+        Jackpot jackpot = mock(Jackpot.class);
+        JackpotContribution contribution = mock(JackpotContribution.class);
+
         given(contributionRepository.existsByBetId(betId)).willReturn(false);
-        given(jackpotRepository.findById(jackpotId)).willReturn(Optional.empty());
+        given(jackpotRepository.findById(jackpotId)).willReturn(Optional.of(jackpot));
+        given(jackpot.contribute(isA(Bet.class))).willReturn(contribution);
 
-        assertThatThrownBy(() -> service.process(bet))
-                .isInstanceOf(JackpotNotFoundException.class)
-                .hasMessageContaining("Jackpot not found: %s".formatted(jackpotId.value()));
+        service.process(bet);
 
-        then(contributionRepository).shouldHaveNoMoreInteractions();
-        then(jackpotRepository).shouldHaveNoMoreInteractions();
+        then(contributionRepository).should().save(contribution);
+        then(jackpotRepository).should().save(jackpot);
         then(rewardRepository).shouldHaveNoInteractions();
     }
 
