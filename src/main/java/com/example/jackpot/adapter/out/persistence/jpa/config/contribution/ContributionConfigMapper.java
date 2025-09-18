@@ -15,6 +15,7 @@ public final class ContributionConfigMapper {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private ContributionConfigMapper() {
+        throw new AssertionError("No instances of %s for you".formatted(this.getClass().getSimpleName()));
     }
 
     public static ContributionCalculator toDomain(String json) {

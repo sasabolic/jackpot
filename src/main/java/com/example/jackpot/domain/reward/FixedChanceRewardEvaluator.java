@@ -38,6 +38,6 @@ public final class FixedChanceRewardEvaluator implements RewardEvaluator {
             return true;
         }
 
-        return randomNumberGenerator.getAsDouble() <= chance.fractionalValue().doubleValue();
+        return randomNumberGenerator.getAsDouble() < chance.fractionalValue().doubleValue();
     }
 }

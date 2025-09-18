@@ -81,12 +81,14 @@ class FixedChanceRewardEvaluatorTest {
             (useHeadersInDisplayName = true,
                     textBlock = """
                             CHANCE_PERCENT, GENERATED_RANDOM_NUM,   EXPECTED
-                            62.5,           0.625,                  true
-                            62.5,           0.6251,                 false
-                            25.0,           0.25,                   true
-                            25.0,           0.2499,                 true
-                            1.0,            0.01,                   true
-                            1.0,            0.0101,                 false
+                            62.5,           0.625,                  false
+                            62.5,           0.6249999,              true
+                            
+                            25.0,           0.25,                   false
+                            25.0,           0.2499999,              true
+                            
+                            1.0,            0.01,                   false
+                            1.0,            0.0099999,              true
                             """)
     void givenChanceAndRandomNumberGenerator_whenEvaluate_thenExpectedResult(String chance, String rngValue, boolean expected) {
         DoubleSupplier rng = () -> Double.parseDouble(rngValue);

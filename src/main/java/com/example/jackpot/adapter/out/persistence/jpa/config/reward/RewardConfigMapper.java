@@ -15,6 +15,7 @@ public final class RewardConfigMapper {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private RewardConfigMapper() {
+        throw new AssertionError("No instances of %s for you".formatted(this.getClass().getSimpleName()));
     }
 
     public static RewardEvaluator toDomain(String json) {
@@ -33,11 +34,14 @@ public final class RewardConfigMapper {
                 }
                 case "VARIABLE_CHANCE" -> {
                     VariableRewardConfigJson config = MAPPER.treeToValue(cfg, VariableRewardConfigJson.class);
-                    MoneyJson rewardPoolLimit = config.rewardPoolLimit();
+                    MoneyJson minPool = config.minPool();
+                    MoneyJson maxPool = config.maxPool();
 
                     yield new VariableChanceRewardEvaluator(
-                            Percentage.of(config.startPercent()),
-                            Money.of(rewardPoolLimit.amount(), rewardPoolLimit.currency())
+                            Percentage.of(config.minPercent()),
+                            Percentage.of(config.maxPercent()),
+                            Money.of(minPool.amount(), minPool.currency()),
+                            Money.of(maxPool.amount(), maxPool.currency())
                     );
                 }
                 default -> throw new IllegalArgumentException("Unsupported reward type: '%s'".formatted(type));

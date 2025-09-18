@@ -73,6 +73,12 @@ public final class Money implements Comparable<Money> {
         return compareTo(other) < 0;
     }
 
+    public boolean isLessThanOrEqual(Money other) {
+        requireSameCurrency(other);
+
+        return compareTo(other) <= 0;
+    }
+
     public Money plus(Money other) {
         requireSameCurrency(other);
 
