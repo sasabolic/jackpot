@@ -21,11 +21,12 @@ public final class JackpotMapper {
         );
     }
 
-    public static JackpotEntity toEntity(Jackpot jackpot) {
+    public static JackpotEntity toEntity(Jackpot jackpot, Long version) {
         return new JackpotEntity(
                 jackpot.jackpotId().value(),
                 MoneyMapper.toEmbeddable(jackpot.initialPool()),
-                MoneyMapper.toEmbeddable(jackpot.currentPool())
+                MoneyMapper.toEmbeddable(jackpot.currentPool()),
+                version
         );
     }
 }

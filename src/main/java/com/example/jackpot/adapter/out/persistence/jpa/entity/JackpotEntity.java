@@ -1,6 +1,7 @@
 package com.example.jackpot.adapter.out.persistence.jpa.entity;
 
 import jakarta.persistence.*;
+import org.springframework.data.domain.Persistable;
 
 import java.util.UUID;
 
@@ -12,8 +13,8 @@ public class JackpotEntity {
     private UUID id;
 
     @Version
-    @Column(name = "version", nullable = false)
-    private long version;
+    @Column(name = "version")
+    private Long version;
 
     @Embedded
     @AttributeOverride(name = "amount", column = @Column(name = "initial_amount", precision = 19, scale = 2, nullable = false))
@@ -37,10 +38,11 @@ public class JackpotEntity {
         // Only for JPA
     }
 
-    public JackpotEntity(UUID id, MoneyEmbeddable initial, MoneyEmbeddable current) {
+    public JackpotEntity(UUID id, MoneyEmbeddable initial, MoneyEmbeddable current, Long version) {
         this.id = id;
         this.initial = initial;
         this.current = current;
+        this.version = version;
     }
 
     public JackpotEntity(UUID id, MoneyEmbeddable initial, MoneyEmbeddable current, String contributionConfigJson, String rewardConfigJson) {
@@ -53,6 +55,10 @@ public class JackpotEntity {
 
     public UUID getId() {
         return id;
+    }
+
+    public Long getVersion() {
+        return version;
     }
 
     public MoneyEmbeddable getInitial() {
