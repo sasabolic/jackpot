@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.DoubleSupplier;
 
 import static com.example.jackpot.domain.common.DomainAssertions.isTrue;
@@ -16,9 +15,9 @@ import static java.util.Objects.requireNonNull;
 /**
  * Evaluates a jackpot win with a <b>variable (linearly increasing) chance</b> expressed as a {@link Percentage}.
  * <p>
- * The chance starts at {@code minPercent} and stays with this value until {@code minPool} is reached, after that it grows linearly towards {@code maxPercent} as the pool approaches
- * a hard cap {@code maxPool}. Once the current pool is at or above the cap, the outcome is a
- * guaranteed win.
+ * The chance starts at {@code minPercent} and stays with this value until {@code minPool} is reached,
+ * after that it grows linearly towards {@code maxPercent} as the pool approaches a hard cap {@code maxPool}.
+ * Once the current pool is at or above the cap, the outcome is a guaranteed win.
  */
 @Slf4j
 public class VariableChanceRewardEvaluator implements RewardEvaluator {
@@ -32,7 +31,7 @@ public class VariableChanceRewardEvaluator implements RewardEvaluator {
     private final DoubleSupplier randomNumberGenerator;
 
     public VariableChanceRewardEvaluator(Percentage minPercent, Percentage maxPercent, Money minPool, Money maxPool) {
-        this(minPercent, maxPercent, minPool, maxPool, ThreadLocalRandom.current()::nextDouble);
+        this(minPercent, maxPercent, minPool, maxPool, new java.security.SecureRandom()::nextDouble);
     }
 
     public VariableChanceRewardEvaluator(Percentage minPercent, Percentage maxPercent, Money minPool, Money maxPool, DoubleSupplier randomNumberGenerator) {
@@ -60,7 +59,7 @@ public class VariableChanceRewardEvaluator implements RewardEvaluator {
     public boolean evaluate(RewardContext ctx) {
         requireNonNull(ctx, "ctx must not be null");
 
-        isTrue(ctx.currentPool().hasSameCurrencyAs(minPool) && ctx.currentPool().hasSameCurrencyAs(maxPool), "Jackpot currentPool, minPool and maxPool must have same currency");
+        isTrue(ctx.currentPool().hasSameCurrencyAs(minPool, maxPool), "Jackpot currentPool, minPool and maxPool must have same currency");
 
         if (ctx.currentPool().isGreaterThanOrEqual(maxPool)) {
             return true;

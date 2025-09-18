@@ -1,7 +1,7 @@
 package com.example.jackpot.adapter.in.messaging.kafka;
 
 import com.example.jackpot.adapter.out.messaging.kafka.BetMessage;
-import com.example.jackpot.application.in.BetProcessingService;
+import com.example.jackpot.application.port.in.BetProcessingService;
 import com.example.jackpot.domain.model.Bet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

@@ -5,6 +5,7 @@ import com.example.jackpot.domain.contribution.ContributionContext;
 import com.example.jackpot.domain.model.id.BetId;
 import com.example.jackpot.domain.model.id.JackpotId;
 import com.example.jackpot.domain.model.id.UserId;
+import com.example.jackpot.domain.model.vo.CycleNumber;
 import com.example.jackpot.domain.model.vo.Money;
 import com.example.jackpot.domain.reward.RewardContext;
 import com.example.jackpot.domain.reward.RewardEvaluator;
@@ -38,38 +39,54 @@ class JackpotTest {
     class ConstructorTests {
 
         @Test
-        void givenNullJackpotId_whenNewInstance_thenNpe() {
+        void givenNullJackpotId_whenNewInstance_thenThrowException() {
             JackpotId jackpotId = null;
+            CycleNumber currentCycle = currentCycle();
             Money initialPool = eur("10.00");
             ContributionCalculator calc = mock(ContributionCalculator.class);
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
-            assertThatThrownBy(() -> new Jackpot(jackpotId, initialPool, calc, evaluator))
+            assertThatThrownBy(() -> new Jackpot(jackpotId, currentCycle, initialPool, calc, evaluator))
                     .isInstanceOf(NullPointerException.class)
                     .hasMessage("jackpotId must not be null");
         }
 
         @Test
-        void givenNullInitialPool_whenNewInstance_thenNpe() {
+        void givenNullCurrentCycle_whenNewInstance_thenThrowException() {
             JackpotId jackpotId = jackpotId();
+            CycleNumber currentCycle = null;
+            Money initialPool = eur("10.00");
+            ContributionCalculator calc = mock(ContributionCalculator.class);
+            RewardEvaluator evaluator = mock(RewardEvaluator.class);
+
+            assertThatThrownBy(() -> new Jackpot(jackpotId, currentCycle, initialPool, calc, evaluator))
+                    .isInstanceOf(NullPointerException.class)
+                    .hasMessage("currentCycle must not be null");
+        }
+
+        @Test
+        void givenNullInitialPool_whenNewInstance_thenThrowException() {
+            JackpotId jackpotId = jackpotId();
+            CycleNumber currentCycle = currentCycle();
             Money initialPool = null;
             ContributionCalculator calc = mock(ContributionCalculator.class);
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
-            assertThatThrownBy(() -> new Jackpot(jackpotId, initialPool, calc, evaluator))
+            assertThatThrownBy(() -> new Jackpot(jackpotId, currentCycle, initialPool, calc, evaluator))
                     .isInstanceOf(NullPointerException.class)
                     .hasMessage("initialPool must not be null");
         }
 
         @Test
-        void givenNullCurrentPool_whenNewInstance_thenNpe() {
+        void givenNullCurrentPool_whenNewInstance_thenThrowException() {
             JackpotId jackpotId = jackpotId();
+            CycleNumber currentCycle = currentCycle();
             Money initialPool = eur("10.00");
             Money currentPool = null;
             ContributionCalculator calc = mock(ContributionCalculator.class);
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
-            assertThatThrownBy(() -> new Jackpot(jackpotId, initialPool, currentPool, calc, evaluator))
+            assertThatThrownBy(() -> new Jackpot(jackpotId, currentCycle, initialPool, currentPool, calc, evaluator))
                     .isInstanceOf(NullPointerException.class)
                     .hasMessage("currentPool must not be null");
         }
@@ -77,11 +94,12 @@ class JackpotTest {
         @Test
         void givenNullContributionCalculator_whenNewInstance_thenNpe() {
             JackpotId jackpotId = jackpotId();
+            CycleNumber currentCycle = currentCycle();
             Money initialPool = eur("10.00");
             ContributionCalculator calc = null;
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
-            assertThatThrownBy(() -> new Jackpot(jackpotId, initialPool, calc, evaluator))
+            assertThatThrownBy(() -> new Jackpot(jackpotId, currentCycle, initialPool, calc, evaluator))
                     .isInstanceOf(NullPointerException.class)
                     .hasMessage("contributionCalculator must not be null");
         }
@@ -89,11 +107,12 @@ class JackpotTest {
         @Test
         void givenNullRewardEvaluator_whenNewInstance_thenNpe() {
             JackpotId jackpotId = jackpotId();
+            CycleNumber currentCycle = currentCycle();
             Money initialPool = eur("10.00");
             ContributionCalculator calc = mock(ContributionCalculator.class);
             RewardEvaluator evaluator = null;
 
-            assertThatThrownBy(() -> new Jackpot(jackpotId, initialPool, calc, evaluator))
+            assertThatThrownBy(() -> new Jackpot(jackpotId, currentCycle, initialPool, calc, evaluator))
                     .isInstanceOf(NullPointerException.class)
                     .hasMessage("rewardEvaluator must not be null");
         }
@@ -101,12 +120,13 @@ class JackpotTest {
         @Test
         void givenCurrencyMismatchBetweenInitialAndCurrent_whenNewInstance_thenIae() {
             JackpotId jackpotId = jackpotId();
+            CycleNumber currentCycle = currentCycle();
             Money initialPool = eur("10.00");
             Money currentPool = usd("10.00");
             ContributionCalculator calc = mock(ContributionCalculator.class);
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
-            assertThatThrownBy(() -> new Jackpot(jackpotId, initialPool, currentPool, calc, evaluator))
+            assertThatThrownBy(() -> new Jackpot(jackpotId, currentCycle, initialPool, currentPool, calc, evaluator))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("initialPool and currentPool must use the same currency");
         }
@@ -116,13 +136,14 @@ class JackpotTest {
             ContributionCalculator calc = mock(ContributionCalculator.class);
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
-            var id = jackpotId();
-            var initial = eur("25.00");
-            var current = eur("30.00");
+            JackpotId id = jackpotId();
+            CycleNumber currentCycle = currentCycle();
+            Money initial = eur("25.00");
+            Money current = eur("30.00");
 
-            var jp = new Jackpot(id, initial, current, calc, evaluator);
+            Jackpot result = new Jackpot(id, currentCycle, initial, current, calc, evaluator);
 
-            assertThat(jp)
+            assertThat(result)
                     .isNotNull()
                     .satisfies(j -> {
                         assertThat(j.jackpotId()).isEqualTo(id);
@@ -145,9 +166,10 @@ class JackpotTest {
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
             JackpotId id = jackpotId();
+            CycleNumber currentCycle = currentCycle();
             Money initial = eur("100.00");
             Money current = eur("120.00");
-            Jackpot jackpot = new Jackpot(id, initial, current, calc, evaluator);
+            Jackpot jackpot = new Jackpot(id, currentCycle, initial, current, calc, evaluator);
 
             Bet bet = new Bet(betId(), userId(), id, eur("10.00"));
 
@@ -173,6 +195,7 @@ class JackpotTest {
                         assertThat(jc.betId()).isEqualTo(bet.betId());
                         assertThat(jc.userId()).isEqualTo(bet.userId());
                         assertThat(jc.jackpotId()).isEqualTo(id);
+                        assertThat(jc.jackpotCycle()).isEqualTo(currentCycle);
                         assertThat(jc.stakeAmount()).isEqualTo(eur("10.00"));
                         assertThat(jc.contributionAmount()).isEqualTo(eur("2.50"));
                         assertThat(jc.currentJackpotAmount()).isEqualTo(eur("122.50"));
@@ -185,7 +208,7 @@ class JackpotTest {
             ContributionCalculator calc = mock(ContributionCalculator.class);
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
-            Jackpot jackpot = new Jackpot(jackpotId(), eur("10.00"), calc, evaluator);
+            Jackpot jackpot = new Jackpot(jackpotId(), currentCycle(), eur("10.00"), calc, evaluator);
 
             assertThatThrownBy(() -> jackpot.contribute(null))
                     .isInstanceOf(NullPointerException.class)
@@ -201,7 +224,7 @@ class JackpotTest {
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
             JackpotId target = jackpotId();
-            Jackpot jackpot = new Jackpot(target, eur("10.00"), calc, evaluator);
+            Jackpot jackpot = new Jackpot(target, currentCycle(), eur("10.00"), calc, evaluator);
 
             Bet bet = new Bet(betId(), userId(), jackpotId(), eur("5.00"));
 
@@ -219,7 +242,7 @@ class JackpotTest {
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
             JackpotId id = jackpotId();
-            Jackpot jackpot = new Jackpot(id, eur("10.00"), calc, evaluator);
+            Jackpot jackpot = new Jackpot(id, currentCycle(), eur("10.00"), calc, evaluator);
 
             Bet bet = new Bet(betId(), userId(), id, usd("1.00")); // USD vs EUR
 
@@ -244,8 +267,7 @@ class JackpotTest {
             ContributionCalculator calc = mock(ContributionCalculator.class);
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
-            JackpotId target = jackpotId();
-            Jackpot jackpot = new Jackpot(target, eur("10.00"), calc, evaluator);
+            Jackpot jackpot = new Jackpot(jackpotId(), currentCycle(), eur("10.00"), calc, evaluator);
 
             assertThatThrownBy(() -> jackpot.evaluateRewardFor(null))
                     .isInstanceOf(NullPointerException.class)
@@ -261,7 +283,7 @@ class JackpotTest {
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
             JackpotId target = jackpotId();
-            Jackpot jackpot = new Jackpot(target, eur("10.00"), calc, evaluator);
+            Jackpot jackpot = new Jackpot(target, currentCycle(), eur("10.00"), calc, evaluator);
 
             Bet bet = new Bet(betId(), userId(), jackpotId(), eur("2.00")); // different id
 
@@ -279,9 +301,10 @@ class JackpotTest {
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
             JackpotId id = jackpotId();
+            CycleNumber currentCycle = currentCycle();
             Money initial = eur("50.00");
             Money current = eur("120.00");
-            Jackpot jackpot = new Jackpot(id, initial, current, calc, evaluator);
+            Jackpot jackpot = new Jackpot(id, currentCycle, initial, current, calc, evaluator);
 
             Bet bet = new Bet(betId(), userId(), id, eur("2.00"));
 
@@ -302,14 +325,15 @@ class JackpotTest {
         }
 
         @Test
-        void givenEvaluatorTrue_whenEvaluate_thenRewardAndResetPool() {
+        void givenEvaluatorTrue_whenEvaluate_thenRewardAndNoPoolChange() {
             ContributionCalculator calc = mock(ContributionCalculator.class);
             RewardEvaluator evaluator = mock(RewardEvaluator.class);
 
             JackpotId id = jackpotId();
+            CycleNumber currentCycle = currentCycle();
             Money initial = eur("50.00");
             Money current = eur("120.00");
-            Jackpot jackpot = new Jackpot(id, initial, current, calc, evaluator);
+            Jackpot jackpot = new Jackpot(id, currentCycle, initial, current, calc, evaluator);
 
             Bet bet = new Bet(betId(), userId(), id, eur("2.00"));
 
@@ -331,12 +355,30 @@ class JackpotTest {
                         assertThat(r.betId()).isEqualTo(bet.betId());
                         assertThat(r.userId()).isEqualTo(bet.userId());
                         assertThat(r.jackpotId()).isEqualTo(id);
+                        assertThat(r.jackpotCycle()).isEqualTo(currentCycle);
                         assertThat(r.rewardAmount()).isEqualTo(current);
                         assertThat(r.createdAt()).isNotNull();
                     });
 
-            assertThat(jackpot.currentPool()).isEqualTo(initial);
+            assertThat(jackpot.currentPool()).isEqualTo(current);
         }
+    }
+
+    @Test
+    void whenStartNextCycle_thenCycleIncrementedAndPoolResetToInitialAmount() {
+        ContributionCalculator calc = mock(ContributionCalculator.class);
+        RewardEvaluator evaluator = mock(RewardEvaluator.class);
+
+        JackpotId id = jackpotId();
+        CycleNumber currentCycle = currentCycle();
+        Money initial = eur("50.00");
+        Money current = eur("120.00");
+        Jackpot jackpot = new Jackpot(id, currentCycle, initial, current, calc, evaluator);
+
+        jackpot.startNextCycle();
+
+        assertThat(jackpot.currentPool()).isEqualTo(initial);
+        assertThat(jackpot.currentCycle().value()).isEqualTo(currentCycle.value() + 1);
     }
 
     // ------------------------------------------------------------------
@@ -353,6 +395,10 @@ class JackpotTest {
 
     private static JackpotId jackpotId() {
         return JackpotId.of(UUID.randomUUID());
+    }
+
+    private static CycleNumber currentCycle() {
+        return CycleNumber.of(1);
     }
 
     private static Money eur(String amount) {

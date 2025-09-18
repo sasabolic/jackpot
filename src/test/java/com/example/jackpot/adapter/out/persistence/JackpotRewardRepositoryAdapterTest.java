@@ -7,6 +7,8 @@ import com.example.jackpot.domain.model.JackpotReward;
 import com.example.jackpot.domain.model.id.BetId;
 import com.example.jackpot.domain.model.id.JackpotId;
 import com.example.jackpot.domain.model.id.UserId;
+import com.example.jackpot.domain.model.vo.CycleNumber;
+import com.example.jackpot.domain.model.vo.JackpotCycle;
 import com.example.jackpot.domain.model.vo.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +44,10 @@ class JackpotRewardRepositoryAdapterTest {
         JackpotReward reward = new JackpotReward(
                 BetId.of(UUID.randomUUID()),
                 UserId.of(UUID.randomUUID()),
-                JackpotId.of(UUID.randomUUID()),
+                JackpotCycle.of(
+                        JackpotId.of(UUID.randomUUID()),
+                        CycleNumber.of(1)
+                ),
                 Money.of("230.54", "EUR")
         );
 
@@ -71,6 +76,7 @@ class JackpotRewardRepositoryAdapterTest {
                 betId,
                 UUID.randomUUID(),
                 UUID.randomUUID(),
+                1,
                 new MoneyEmbeddable(BigDecimal.ONE, "EUR"),
                 Instant.now()
         );

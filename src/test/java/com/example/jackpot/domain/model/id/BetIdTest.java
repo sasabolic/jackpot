@@ -31,7 +31,6 @@ class BetIdTest {
     @ValueSource(strings = {
             "123e4567-e89b-12d3-a456-42661417400",
             "123e4567-e89b-12d3-a456-4266141740012",
-            "732ade44-0807-45cd-87e1-60d04788d6fb"
     })
     void givenInvalidValueLength_whenOf_thenThrowException(String value) {
         assertThatThrownBy(() -> BetId.of(value))

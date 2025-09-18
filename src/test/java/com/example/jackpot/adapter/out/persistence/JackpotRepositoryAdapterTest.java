@@ -6,6 +6,7 @@ import com.example.jackpot.adapter.out.persistence.jpa.repostiory.JackpotJpaRepo
 import com.example.jackpot.domain.contribution.ContributionCalculator;
 import com.example.jackpot.domain.model.Jackpot;
 import com.example.jackpot.domain.model.id.JackpotId;
+import com.example.jackpot.domain.model.vo.CycleNumber;
 import com.example.jackpot.domain.model.vo.Money;
 import com.example.jackpot.domain.reward.RewardEvaluator;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,13 +40,19 @@ class JackpotRepositoryAdapterTest {
 
     @Test
     void whenSave_thenReturnCorrectResult() {
+        JackpotId jackpotId = JackpotId.of(UUID.randomUUID());
         Jackpot jackpot = new Jackpot(
-                JackpotId.of(UUID.randomUUID()),
+                jackpotId,
+                CycleNumber.of(1),
                 Money.of("100.00", "EUR"),
                 Money.of("230.54", "EUR"),
                 mock(ContributionCalculator.class),
                 mock(RewardEvaluator.class)
         );
+
+        JackpotEntity entity = mock(JackpotEntity.class);
+        given(entity.getVersion()).willReturn(1L);
+        given(repository.findById(jackpotId.value())).willReturn(Optional.of(entity));
 
         adapter.save(jackpot);
 
@@ -69,6 +76,7 @@ class JackpotRepositoryAdapterTest {
         UUID jackpotId = UUID.randomUUID();
         JackpotEntity entity = new JackpotEntity(
                 jackpotId,
+                1,
                 new MoneyEmbeddable(new BigDecimal("100.00"), "EUR"),
                 new MoneyEmbeddable(new BigDecimal("230.54"), "EUR"),
                 "{\"type\":\"FIXED\",\"schemaVersion\":1,\"config\":{\"rate\":\"6.00\"}}",

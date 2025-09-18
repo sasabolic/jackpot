@@ -37,22 +37,23 @@ class KafkaBetProducerErrorTest {
 
     @Test
     void shouldLogErrorWhenKafkaSendFails() {
-        LogCaptor logCaptor = LogCaptor.forClass(KafkaBetProducer.class);
+        try (LogCaptor logCaptor = LogCaptor.forClass(KafkaBetProducer.class)) {
 
-        Bet bet = new Bet(
-                BetId.of(UUID.randomUUID()),
-                UserId.of(UUID.randomUUID()),
-                JackpotId.of(UUID.randomUUID()),
-                Money.of("10.00", "EUR")
-        );
+            Bet bet = new Bet(
+                    BetId.of(UUID.randomUUID()),
+                    UserId.of(UUID.randomUUID()),
+                    JackpotId.of(UUID.randomUUID()),
+                    Money.of("10.00", "EUR")
+            );
 
-        CompletableFuture<SendResult<String, BetMessage>> failedFuture = new CompletableFuture<>();
-        failedFuture.completeExceptionally(new RuntimeException("Kafka send failed"));
+            CompletableFuture<SendResult<String, BetMessage>> failedFuture = new CompletableFuture<>();
+            failedFuture.completeExceptionally(new RuntimeException("Kafka send failed"));
 
-        given(kafka.send(any(), anyString(), any(BetMessage.class))).willReturn(failedFuture);
+            given(kafka.send(any(), anyString(), any(BetMessage.class))).willReturn(failedFuture);
 
-        kafkaBetProducer.publish(bet);
+            kafkaBetProducer.publish(bet);
 
-        assertThat(logCaptor.getErrorLogs()).anyMatch(log -> log.contains("Publish failed betId=%s jackpotId=%s:".formatted(bet.betId(), bet.jackpotId())) && log.contains("Kafka send failed"));
+            assertThat(logCaptor.getErrorLogs()).anyMatch(log -> log.contains("Publish failed betId=%s jackpotId=%s:".formatted(bet.betId().value(), bet.jackpotId().value())) && log.contains("Kafka send failed"));
+        }
     }
 }

@@ -129,10 +129,19 @@ class MoneyTest {
     }
 
     @Test
+    void givenDifferentCurrencies_whenHasSameCurrencyAs_thenFalse() {
+        Money a = Money.of("0.01", "EUR");
+        Money b = Money.of("0.02", "EUR");
+        Money c = Money.of("0.02", "USD");
+
+        assertThat(a.hasSameCurrencyAs(b, c)).isFalse();
+    }
+
+    @Test
     void givenNull_whenHasSameCurrencyAs_thenFalse() {
         Money a = Money.of("0.01", "EUR");
 
-        assertThat(a.hasSameCurrencyAs(null)).isFalse();
+        assertThat(a.hasSameCurrencyAs((Money) null)).isFalse();
     }
 
     @ParameterizedTest(name = "[{index}] given check if {0} > {1} (EUR) → {2}")

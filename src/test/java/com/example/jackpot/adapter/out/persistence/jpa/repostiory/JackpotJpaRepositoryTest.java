@@ -28,6 +28,7 @@ class JackpotJpaRepositoryTest {
     @BeforeEach
     void setUp() {
         jackpot = new JackpotEntity(UUID.randomUUID(),
+                1,
                 new MoneyEmbeddable(BigDecimal.ZERO, "EUR"),
                 new MoneyEmbeddable(BigDecimal.TWO, "EUR"),
                 "{\"type\":\"FIXED\",\"schemaVersion\":1,\"config\":{\"rate\":\"5.00\"}}",
@@ -66,10 +67,12 @@ class JackpotJpaRepositoryTest {
     void givenJackpotUpdated_whenSaved_thenExpectedFieldsNotChanged() {
         JackpotEntity updatedJackpot = new JackpotEntity(
                 jackpot.getId(),
+                1,
                 new MoneyEmbeddable(BigDecimal.ONE, "EUR"),
                 new MoneyEmbeddable(BigDecimal.TEN, "EUR"),
                 "{\"type\":\"FIXED\",\"schemaVersion\":1,\"config\":{\"rate\":\"6.00\"}}",
                 "{\"type\":\"FIXED_CHANCE\",\"schemaVersion\":1,\"config\":{\"chancePercent\":\"3.50\"}}");
+        updatedJackpot.setVersion(jackpot.getVersion());
 
         repository.save(updatedJackpot);
         em.flush();

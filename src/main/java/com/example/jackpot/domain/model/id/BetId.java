@@ -9,6 +9,9 @@ import java.util.UUID;
 import static com.example.jackpot.domain.common.DomainAssertions.isNotNull;
 import static com.example.jackpot.domain.common.DomainAssertions.isTrue;
 
+/**
+ * A bet identifier.
+ */
 @ToString
 @EqualsAndHashCode
 public final class BetId {

@@ -7,17 +7,9 @@ import com.example.jackpot.domain.model.id.JackpotId;
 import com.example.jackpot.domain.model.id.UserId;
 
 public final class BetMapper {
+
     private BetMapper() {
         throw new AssertionError("No instances of %s for you".formatted(this.getClass().getSimpleName()));
-    }
-
-    public static BetEntity toEntity(Bet bet) {
-        return new BetEntity(
-                bet.betId().value(),
-                bet.userId().value(),
-                bet.jackpotId().value(),
-                MoneyMapper.toEmbeddable(bet.betAmount())
-        );
     }
 
     public static Bet toDomain(BetEntity entity) {
@@ -26,6 +18,15 @@ public final class BetMapper {
                 UserId.of(entity.getUserId()),
                 JackpotId.of(entity.getJackpotId()),
                 MoneyMapper.toDomain(entity.getBet())
+        );
+    }
+
+    public static BetEntity toEntity(Bet bet) {
+        return new BetEntity(
+                bet.betId().value(),
+                bet.userId().value(),
+                bet.jackpotId().value(),
+                MoneyMapper.toEmbeddable(bet.betAmount())
         );
     }
 }

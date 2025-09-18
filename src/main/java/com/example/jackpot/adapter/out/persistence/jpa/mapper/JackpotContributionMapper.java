@@ -4,6 +4,7 @@ import com.example.jackpot.adapter.out.persistence.jpa.entity.JackpotContributio
 import com.example.jackpot.domain.model.JackpotContribution;
 
 public final class JackpotContributionMapper {
+
     private JackpotContributionMapper() {
         throw new AssertionError("No instances of %s for you".formatted(this.getClass().getSimpleName()));
     }
@@ -13,6 +14,7 @@ public final class JackpotContributionMapper {
                 contribution.betId().value(),
                 contribution.userId().value(),
                 contribution.jackpotId().value(),
+                contribution.jackpotCycle().value(),
                 MoneyMapper.toEmbeddable(contribution.stakeAmount()),
                 MoneyMapper.toEmbeddable(contribution.contributionAmount()),
                 MoneyMapper.toEmbeddable(contribution.currentJackpotAmount()),

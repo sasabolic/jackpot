@@ -33,6 +33,7 @@ class BetJpaRepositoryTest {
     @BeforeEach
     void setUp() {
         jackpot = new JackpotEntity(UUID.randomUUID(),
+                1,
                 new MoneyEmbeddable(BigDecimal.ZERO, "EUR"),
                 new MoneyEmbeddable(BigDecimal.TWO, "EUR"),
                 "{\"type\":\"FIXED\",\"schemaVersion\":1,\"config\":{\"rate\":\"5.00\"}}",

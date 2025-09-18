@@ -9,6 +9,9 @@ import java.math.RoundingMode;
 import static com.example.jackpot.domain.common.DomainAssertions.isTrue;
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Represents a percentage value in the inclusive range [0, 100].
+ */
 @EqualsAndHashCode
 @ToString
 public final class Percentage implements Comparable<Percentage> {

@@ -1,8 +1,8 @@
 package com.example.jackpot.application.service;
 
-import com.example.jackpot.application.in.PlaceBetService;
-import com.example.jackpot.application.out.BetProducer;
-import com.example.jackpot.application.out.BetRepository;
+import com.example.jackpot.application.port.in.PlaceBetService;
+import com.example.jackpot.application.port.out.BetProducer;
+import com.example.jackpot.application.port.out.BetRepository;
 import com.example.jackpot.domain.model.Bet;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

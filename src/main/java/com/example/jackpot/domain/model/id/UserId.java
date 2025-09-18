@@ -9,6 +9,9 @@ import java.util.UUID;
 import static com.example.jackpot.domain.common.DomainAssertions.isNotNull;
 import static com.example.jackpot.domain.common.DomainAssertions.isTrue;
 
+/**
+ * An user identifier.
+ */
 @ToString
 @EqualsAndHashCode
 public final class UserId {

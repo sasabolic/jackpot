@@ -8,6 +8,9 @@ import java.math.BigDecimal;
 import static com.example.jackpot.domain.common.DomainAssertions.isTrue;
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Represents a positive decay factor used in rate decay calculations.
+ */
 @EqualsAndHashCode
 @ToString
 public final class DecayFactor {
@@ -35,5 +38,4 @@ public final class DecayFactor {
     public BigDecimal value() {
         return this.value;
     }
-
 }

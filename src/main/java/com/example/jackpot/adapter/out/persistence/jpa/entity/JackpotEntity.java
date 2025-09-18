@@ -1,7 +1,6 @@
 package com.example.jackpot.adapter.out.persistence.jpa.entity;
 
 import jakarta.persistence.*;
-import org.springframework.data.domain.Persistable;
 
 import java.util.UUID;
 
@@ -15,6 +14,9 @@ public class JackpotEntity {
     @Version
     @Column(name = "version")
     private Long version;
+
+    @Column(name = "current_cycle", nullable = false)
+    private int currentCycle = 1;
 
     @Embedded
     @AttributeOverride(name = "amount", column = @Column(name = "initial_amount", precision = 19, scale = 2, nullable = false))
@@ -38,15 +40,16 @@ public class JackpotEntity {
         // Only for JPA
     }
 
-    public JackpotEntity(UUID id, MoneyEmbeddable initial, MoneyEmbeddable current, Long version) {
+    public JackpotEntity(UUID id, int currentCycle, MoneyEmbeddable initial, MoneyEmbeddable current) {
         this.id = id;
+        this.currentCycle = currentCycle;
         this.initial = initial;
         this.current = current;
-        this.version = version;
     }
 
-    public JackpotEntity(UUID id, MoneyEmbeddable initial, MoneyEmbeddable current, String contributionConfigJson, String rewardConfigJson) {
+    public JackpotEntity(UUID id, int currentCycle, MoneyEmbeddable initial, MoneyEmbeddable current, String contributionConfigJson, String rewardConfigJson) {
         this.id = id;
+        this.currentCycle = currentCycle;
         this.initial = initial;
         this.current = current;
         this.contributionConfigJson = contributionConfigJson;
@@ -59,6 +62,14 @@ public class JackpotEntity {
 
     public Long getVersion() {
         return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public int getCurrentCycle() {
+        return currentCycle;
     }
 
     public MoneyEmbeddable getInitial() {

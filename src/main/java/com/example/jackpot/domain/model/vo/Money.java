@@ -10,6 +10,11 @@ import java.util.Currency;
 import static com.example.jackpot.domain.common.DomainAssertions.isTrue;
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Represents a money value: amount + ISO currency.
+ * <p>
+ * Amounts are normalized to scale 2 (HALF_UP).
+ */
 @EqualsAndHashCode
 @ToString
 public final class Money implements Comparable<Money> {
@@ -53,6 +58,15 @@ public final class Money implements Comparable<Money> {
 
     public boolean hasSameCurrencyAs(Money other) {
         return other != null && this.currency.equals(other.currency);
+    }
+
+    public boolean hasSameCurrencyAs(Money... others) {
+        for (Money o : others) {
+            if (!hasSameCurrencyAs(o)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean isGreaterThan(Money other) {

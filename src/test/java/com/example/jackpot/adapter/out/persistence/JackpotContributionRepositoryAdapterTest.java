@@ -6,6 +6,8 @@ import com.example.jackpot.domain.model.JackpotContribution;
 import com.example.jackpot.domain.model.id.BetId;
 import com.example.jackpot.domain.model.id.JackpotId;
 import com.example.jackpot.domain.model.id.UserId;
+import com.example.jackpot.domain.model.vo.CycleNumber;
+import com.example.jackpot.domain.model.vo.JackpotCycle;
 import com.example.jackpot.domain.model.vo.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +40,10 @@ class JackpotContributionRepositoryAdapterTest {
         JackpotContribution contribution = new JackpotContribution(
                 BetId.of(UUID.randomUUID()),
                 UserId.of(UUID.randomUUID()),
-                JackpotId.of(UUID.randomUUID()),
+                JackpotCycle.of(
+                        JackpotId.of(UUID.randomUUID()),
+                        CycleNumber.of(1)
+                ),
                 Money.of("100.00", "EUR"),
                 Money.of("20.54", "EUR"),
                 Money.of("230.57", "EUR")

@@ -3,7 +3,7 @@ package com.example.jackpot.adapter.out.persistence;
 import com.example.jackpot.adapter.out.persistence.jpa.entity.JackpotEntity;
 import com.example.jackpot.adapter.out.persistence.jpa.mapper.JackpotMapper;
 import com.example.jackpot.adapter.out.persistence.jpa.repostiory.JackpotJpaRepository;
-import com.example.jackpot.application.out.JackpotRepository;
+import com.example.jackpot.application.port.out.JackpotRepository;
 import com.example.jackpot.domain.exception.JackpotNotFoundException;
 import com.example.jackpot.domain.model.Jackpot;
 import com.example.jackpot.domain.model.id.JackpotId;

@@ -22,6 +22,9 @@ public class JackpotRewardEntity implements Persistable<UUID> {
     @Column(name = "jackpot_id", nullable = false)
     private UUID jackpotId;
 
+    @Column(name = "jackpot_cycle", nullable = false)
+    private int jackpotCycle;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns(
             value = {
@@ -45,10 +48,11 @@ public class JackpotRewardEntity implements Persistable<UUID> {
         // Only for JPA
     }
 
-    public JackpotRewardEntity(UUID betId, UUID userId, UUID jackpotId, MoneyEmbeddable reward, Instant createdAt) {
+    public JackpotRewardEntity(UUID betId, UUID userId, UUID jackpotId, int jackpotCycle, MoneyEmbeddable reward, Instant createdAt) {
         this.betId = betId;
         this.userId = userId;
         this.jackpotId = jackpotId;
+        this.jackpotCycle = jackpotCycle;
         this.reward = reward;
         this.createdAt = createdAt;
     }
@@ -63,6 +67,10 @@ public class JackpotRewardEntity implements Persistable<UUID> {
 
     public UUID getJackpotId() {
         return jackpotId;
+    }
+
+    public int getJackpotCycle() {
+        return jackpotCycle;
     }
 
     public MoneyEmbeddable getReward() {

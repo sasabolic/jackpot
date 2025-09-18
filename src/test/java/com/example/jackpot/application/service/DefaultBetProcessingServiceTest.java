@@ -1,9 +1,9 @@
 package com.example.jackpot.application.service;
 
-import com.example.jackpot.application.in.BetProcessingService;
-import com.example.jackpot.application.out.JackpotContributionRepository;
-import com.example.jackpot.application.out.JackpotRepository;
-import com.example.jackpot.application.out.JackpotRewardRepository;
+import com.example.jackpot.application.port.in.BetProcessingService;
+import com.example.jackpot.application.port.out.JackpotContributionRepository;
+import com.example.jackpot.application.port.out.JackpotRepository;
+import com.example.jackpot.application.port.out.JackpotRewardRepository;
 import com.example.jackpot.domain.exception.JackpotNotFoundException;
 import com.example.jackpot.domain.model.Bet;
 import com.example.jackpot.domain.model.Jackpot;
@@ -127,7 +127,7 @@ class DefaultBetProcessingServiceTest {
     }
 
     @Test
-    void givenRewarded_whenProcess_thenRewordSaved() {
+    void givenRewarded_whenProcess_thenRewordSavedAndNewCycleStarted() {
         BetId betId = BetId.of(UUID.randomUUID());
         JackpotId jackpotId = JackpotId.of(UUID.randomUUID());
 
@@ -152,6 +152,7 @@ class DefaultBetProcessingServiceTest {
         then(contributionRepository).should(times(1)).save(contribution);
         then(jackpotRepository).should(times(1)).save(eq(jackpot));
         then(rewardRepository).should(times(1)).save(eq(reward));
+        then(jackpot).should(times(1)).startNextCycle();
 
         then(contributionRepository).shouldHaveNoMoreInteractions();
         then(jackpotRepository).shouldHaveNoMoreInteractions();

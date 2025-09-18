@@ -39,6 +39,7 @@ class RewardJpaRepositoryTest {
     @BeforeEach
     void setUp() {
         jackpot = new JackpotEntity(UUID.randomUUID(),
+                1,
                 new MoneyEmbeddable(BigDecimal.ZERO, "EUR"),
                 new MoneyEmbeddable(BigDecimal.TWO, "EUR"),
                 "{\"type\":\"FIXED\",\"schemaVersion\":1,\"config\":{\"rate\":\"5.00\"}}",
@@ -58,6 +59,7 @@ class RewardJpaRepositoryTest {
                 bet.getId(),
                 userId,
                 jackpot.getId(),
+                1,
                 new MoneyEmbeddable(BigDecimal.TWO, "EUR"),
                 Instant.now()
         );
@@ -105,6 +107,7 @@ class RewardJpaRepositoryTest {
                 newBet.getId(),
                 userId,
                 jackpot.getId(),
+                1,
                 new MoneyEmbeddable(new BigDecimal("2.00"), "EUR"),
                 Instant.now()
         );
@@ -133,6 +136,7 @@ class RewardJpaRepositoryTest {
                 bet.getId(),
                 userId,
                 jackpot.getId(),
+                1,
                 new MoneyEmbeddable(new BigDecimal("3.00"), "EUR"),
                 Instant.now()
         );
@@ -152,6 +156,7 @@ class RewardJpaRepositoryTest {
                 nonExistingBetId,
                 userId,
                 jackpot.getId(),
+                1,
                 new MoneyEmbeddable(BigDecimal.TWO, "EUR"),
                 Instant.now()
         );
@@ -171,6 +176,7 @@ class RewardJpaRepositoryTest {
                 bet.getId(),
                 userId,
                 nonExistingJackpotId,
+                1,
                 new MoneyEmbeddable(BigDecimal.TWO, "EUR"),
                 Instant.now()
         );
@@ -190,6 +196,7 @@ class RewardJpaRepositoryTest {
                 bet.getId(),
                 nonExistingUserId,
                 jackpot.getId(),
+                1,
                 new MoneyEmbeddable(BigDecimal.TWO, "EUR"),
                 Instant.now()
         );

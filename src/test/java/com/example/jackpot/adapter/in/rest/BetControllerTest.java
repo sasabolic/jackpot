@@ -2,8 +2,8 @@ package com.example.jackpot.adapter.in.rest;
 
 import com.example.jackpot.adapter.in.rest.dto.BetRequest;
 import com.example.jackpot.adapter.in.rest.dto.MoneyDto;
-import com.example.jackpot.application.in.PlaceBetService;
-import com.example.jackpot.application.in.RewardQueryService;
+import com.example.jackpot.application.port.in.PlaceBetService;
+import com.example.jackpot.application.port.in.RewardQueryService;
 import com.example.jackpot.domain.model.Bet;
 import com.example.jackpot.domain.model.JackpotReward;
 import com.example.jackpot.domain.model.id.BetId;

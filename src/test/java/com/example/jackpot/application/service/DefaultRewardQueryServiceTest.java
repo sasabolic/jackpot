@@ -1,7 +1,7 @@
 package com.example.jackpot.application.service;
 
-import com.example.jackpot.application.in.RewardQueryService;
-import com.example.jackpot.application.out.JackpotRewardRepository;
+import com.example.jackpot.application.port.in.RewardQueryService;
+import com.example.jackpot.application.port.out.JackpotRewardRepository;
 import com.example.jackpot.domain.model.JackpotReward;
 import com.example.jackpot.domain.model.id.BetId;
 import org.junit.jupiter.api.BeforeEach;

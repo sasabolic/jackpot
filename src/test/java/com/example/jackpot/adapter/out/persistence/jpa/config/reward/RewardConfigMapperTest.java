@@ -71,8 +71,10 @@ class RewardConfigMapperTest {
                   "type": "VARIABLE_CHANCE",
                   "schemaVersion": 1,
                   "config": {
-                    "startPercent": "1.00",
-                    "rewardPoolLimit": { "amount": "1000.00", "currency": "EUR" }
+                    "minPercent": "1.00",
+                    "maxPercent": "100.00",
+                    "minPool": { "amount": "1000.00", "currency": "EUR" },
+                    "maxPool": { "amount": "1000.00", "currency": "EUR" }
                   }
                 }
                 """;
@@ -91,8 +93,10 @@ class RewardConfigMapperTest {
                   "type": "VARIABLE_CHANCE",
                   "schemaVersion": 1,
                   "config": {
-                    "startPercent": 1.00,
-                    "rewardPoolLimit": { "amount": 1000.00, "currency": "EUR" }
+                    "minPercent": 1.00,
+                    "maxPercent": 100.00,
+                    "minPool": { "amount": 1000.00, "currency": "EUR" },
+                    "maxPool": { "amount": 10000.00, "currency": "EUR" }
                   }
                 }
                 """;

@@ -3,9 +3,12 @@ package com.example.jackpot.domain.model;
 import com.example.jackpot.domain.contribution.ContributionCalculator;
 import com.example.jackpot.domain.contribution.ContributionContext;
 import com.example.jackpot.domain.model.id.JackpotId;
+import com.example.jackpot.domain.model.vo.CycleNumber;
+import com.example.jackpot.domain.model.vo.JackpotCycle;
 import com.example.jackpot.domain.model.vo.Money;
 import com.example.jackpot.domain.reward.RewardContext;
 import com.example.jackpot.domain.reward.RewardEvaluator;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -13,20 +16,30 @@ import java.util.Optional;
 import static com.example.jackpot.domain.common.DomainAssertions.isTrue;
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Aggregate root representing a jackpot and its lifecycle.
+ * <p>
+ * This class encapsulates the state and core business logic related to a jackpot,
+ * including managing its pool amount, handling contributions from bets,
+ * evaluating rewards, and starting new jackpot cycles.
+ */
+@Slf4j
 public final class Jackpot {
     private final JackpotId jackpotId;
+    private CycleNumber currentCycle;
     private final Money initialPool;
     private Money currentPool;
 
     private final ContributionCalculator contributionCalculator;
     private final RewardEvaluator rewardEvaluator;
 
-    public Jackpot(JackpotId jackpotId, Money initialPool, ContributionCalculator contributionCalculator, RewardEvaluator rewardEvaluator) {
-        this(jackpotId, initialPool, initialPool, contributionCalculator, rewardEvaluator);
+    public Jackpot(JackpotId jackpotId, CycleNumber currentCycle, Money initialPool, ContributionCalculator contributionCalculator, RewardEvaluator rewardEvaluator) {
+        this(jackpotId, currentCycle, initialPool, initialPool, contributionCalculator, rewardEvaluator);
     }
 
-    public Jackpot(JackpotId jackpotId, Money initialPool, Money currentPool, ContributionCalculator contributionCalculator, RewardEvaluator rewardEvaluator) {
+    public Jackpot(JackpotId jackpotId, CycleNumber currentCycle, Money initialPool, Money currentPool, ContributionCalculator contributionCalculator, RewardEvaluator rewardEvaluator) {
         requireNonNull(jackpotId, "jackpotId must not be null");
+        requireNonNull(currentCycle, "currentCycle must not be null");
         requireNonNull(initialPool, "initialPool must not be null");
         requireNonNull(currentPool, "currentPool must not be null");
         requireNonNull(contributionCalculator, "contributionCalculator must not be null");
@@ -35,6 +48,7 @@ public final class Jackpot {
         isTrue(initialPool.hasSameCurrencyAs(currentPool), "initialPool and currentPool must use the same currency");
 
         this.jackpotId = jackpotId;
+        this.currentCycle = currentCycle;
         this.initialPool = initialPool;
         this.currentPool = currentPool;
         this.contributionCalculator = contributionCalculator;
@@ -52,7 +66,17 @@ public final class Jackpot {
 
         this.currentPool = this.currentPool.plus(contribution);
 
-        return new JackpotContribution(bet.betId(), bet.userId(), this.jackpotId, bet.betAmount(), contribution, this.currentPool, Instant.now());
+        log.info("Added contribution={} for jackpotId={} cycle={}", contribution, this.jackpotId.value(), this.currentCycle.value());
+
+        return new JackpotContribution(
+                bet.betId(),
+                bet.userId(),
+                JackpotCycle.of(this.jackpotId, this.currentCycle),
+                bet.betAmount(),
+                contribution,
+                this.currentPool,
+                Instant.now()
+        );
     }
 
     public Optional<JackpotReward> evaluateRewardFor(Bet bet) {
@@ -61,24 +85,37 @@ public final class Jackpot {
         isTrue(bet.jackpotId().equals(this.jackpotId), "bet targets another jackpot");
 
         boolean win = rewardEvaluator.evaluate(new RewardContext(this.currentPool));
+
+        log.info("Bet with betId={} for jackpotId={} cycle={} evaluated for reward with result={}", bet.betId().value(), this.jackpotId.value(), this.currentCycle.value(), win ? "win" : "loss");
+
         if (!win) {
             return Optional.empty();
         }
 
-        Money payout = this.currentPool;
-        this.currentPool = this.initialPool;
+        Money rewardAmount = this.currentPool;
 
         return Optional.of(new JackpotReward(
                 bet.betId(),
                 bet.userId(),
-                this.jackpotId,
-                payout,
+                JackpotCycle.of(this.jackpotId, this.currentCycle),
+                rewardAmount,
                 Instant.now())
         );
     }
 
+    public void startNextCycle() {
+        this.currentCycle = this.currentCycle.next();
+        this.currentPool = this.initialPool;
+
+        log.info("Started next jackpotId={} cycle={} with a currentPool={}", this.jackpotId.value(), this.currentCycle.value(), this.currentPool);
+    }
+
     public JackpotId jackpotId() {
         return this.jackpotId;
+    }
+
+    public CycleNumber currentCycle() {
+        return this.currentCycle;
     }
 
     public Money initialPool() {

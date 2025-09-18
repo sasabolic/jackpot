@@ -1,9 +1,9 @@
 package com.example.jackpot.application.service;
 
-import com.example.jackpot.application.in.BetProcessingService;
-import com.example.jackpot.application.out.JackpotContributionRepository;
-import com.example.jackpot.application.out.JackpotRepository;
-import com.example.jackpot.application.out.JackpotRewardRepository;
+import com.example.jackpot.application.port.in.BetProcessingService;
+import com.example.jackpot.application.port.out.JackpotContributionRepository;
+import com.example.jackpot.application.port.out.JackpotRepository;
+import com.example.jackpot.application.port.out.JackpotRewardRepository;
 import com.example.jackpot.domain.exception.JackpotNotFoundException;
 import com.example.jackpot.domain.model.Bet;
 import com.example.jackpot.domain.model.Jackpot;
@@ -46,13 +46,15 @@ public class DefaultBetProcessingService implements BetProcessingService {
                 .orElseThrow(() -> new JackpotNotFoundException("Jackpot not found: %s".formatted(jackpotId.value())));
 
         JackpotContribution contribution = jackpot.contribute(bet);
-        contributionRepository.save(contribution);
 
         Optional<JackpotReward> reward = jackpot.evaluateRewardFor(bet);
 
+        contributionRepository.save(contribution);
         reward.ifPresent(r -> {
             rewardRepository.save(r);
             log.info("Reward granted for bet={} jackpot={} user={}", r.betId(), r.jackpotId(), r.userId());
+
+            jackpot.startNextCycle();
         });
 
         jackpotRepository.save(jackpot);

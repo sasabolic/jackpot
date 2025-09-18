@@ -13,14 +13,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class DecayFactorTest {
 
     @Test
-    void givenNullBigDecimal_whenOf_thenThrowNpe() {
+    void givenNullBigDecimal_whenOf_thenThrowException() {
         assertThatThrownBy(() -> DecayFactor.of((BigDecimal) null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("value must not be null");
     }
 
     @Test
-    void givenNullString_whenOf_thenThrowNpe() {
+    void givenNullString_whenOf_thenThrowException() {
         assertThatThrownBy(() -> DecayFactor.of((String) null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("value must not be null");

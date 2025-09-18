@@ -6,6 +6,7 @@ import com.example.jackpot.domain.model.vo.Money;
 import java.util.Currency;
 
 public final class MoneyMapper {
+
     private MoneyMapper() {
         throw new AssertionError("No instances of %s for you".formatted(this.getClass().getSimpleName()));
     }

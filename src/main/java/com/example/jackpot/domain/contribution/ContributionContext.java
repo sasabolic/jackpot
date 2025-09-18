@@ -13,7 +13,7 @@ public record ContributionContext(Money betAmount, Money currentPool, Money init
         requireNonNull(initialPool, "initialPool must not be null");
 
         isTrue(betAmount.isPositive(), "betAmount must be > 0");
-        isTrue(betAmount.hasSameCurrencyAs(currentPool) && betAmount.hasSameCurrencyAs(initialPool), "betAmount, currentPool and initialPool must share the same currency");
+        isTrue(betAmount.hasSameCurrencyAs(currentPool, initialPool), "betAmount, currentPool and initialPool must share the same currency");
         isTrue(currentPool.isGreaterThanOrEqual(initialPool), "currentPool must be ≥ initialPool");
     }
 }

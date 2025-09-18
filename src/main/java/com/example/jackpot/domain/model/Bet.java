@@ -8,6 +8,9 @@ import com.example.jackpot.domain.model.vo.Money;
 import static com.example.jackpot.domain.common.DomainAssertions.isTrue;
 import static java.util.Objects.requireNonNull;
 
+/**
+ * A domain entity representing a placed bet.
+ */
 public final class Bet {
     private final BetId betId;
     private final UserId userId;

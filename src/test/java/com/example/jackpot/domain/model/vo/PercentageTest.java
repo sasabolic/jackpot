@@ -22,14 +22,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
         class FactoryTests {
 
             @Test
-            void givenNullBigDecimal_whenOf_thenThrowNpe() {
+            void givenNullBigDecimal_whenOf_thenThrowException() {
                 assertThatThrownBy(() -> Percentage.of((BigDecimal) null))
                         .isInstanceOf(NullPointerException.class)
                         .hasMessage("value must not be null");
             }
 
             @Test
-            void givenNullString_whenOf_thenThrowNpe() {
+            void givenNullString_whenOf_thenThrowException() {
                 assertThatThrownBy(() -> Percentage.of((String) null))
                         .isInstanceOf(NullPointerException.class)
                         .hasMessage("value must not be null");
@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
             @ParameterizedTest(name = "[{index}] out-of-range={0} → IAE [0,100]")
             @ValueSource(strings = { "-0.01", "100.01", "-1", "1000" })
-            void givenOutOfBounds_whenOf_thenThrowIae(String raw) {
+            void givenOutOfBounds_whenOf_thenThrowException(String raw) {
                 assertThatThrownBy(() -> Percentage.of(raw))
                         .isInstanceOf(IllegalArgumentException.class)
                         .hasMessage("value must be in [0,100]");
