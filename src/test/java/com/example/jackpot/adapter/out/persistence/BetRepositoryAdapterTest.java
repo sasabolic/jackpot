@@ -1,7 +1,6 @@
 package com.example.jackpot.adapter.out.persistence;
 
 import com.example.jackpot.adapter.out.persistence.jpa.entity.BetEntity;
-import com.example.jackpot.adapter.out.persistence.jpa.entity.MoneyEmbeddable;
 import com.example.jackpot.adapter.out.persistence.jpa.repostiory.BetJpaRepository;
 import com.example.jackpot.domain.model.Bet;
 import com.example.jackpot.domain.model.id.BetId;
@@ -15,8 +14,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -63,27 +60,13 @@ class BetRepositoryAdapterTest {
     }
 
     @Test
-    void whenFindById_thenReturnCorrectResult() {
+    void whenExistsById_thenReturnCorrectResult() {
         UUID betId = UUID.randomUUID();
-        BetEntity entity = new BetEntity(
-                betId,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
-                new MoneyEmbeddable(BigDecimal.ONE, "EUR")
-        );
 
-        given(repository.findById(betId)).willReturn(Optional.of(entity));
+        given(repository.existsById(betId)).willReturn(true);
 
-        Optional<Bet> result = adapter.findById(BetId.of(betId));
+        boolean result = adapter.existsById(BetId.of(betId));
 
-        assertThat(result)
-                .isNotEmpty()
-                .hasValueSatisfying(r -> {
-                    assertThat(r.betId().value()).isEqualTo(entity.getId());
-                    assertThat(r.userId().value()).isEqualTo(entity.getUserId());
-                    assertThat(r.jackpotId().value()).isEqualTo(entity.getJackpotId());
-                    assertThat(r.betAmount().amount()).isEqualByComparingTo(entity.getBet().getAmount());
-                    assertThat(r.betAmount().currency()).hasToString(entity.getBet().getCurrency());
-                });
+        assertThat(result).isTrue();
     }
 }

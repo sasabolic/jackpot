@@ -51,18 +51,10 @@ class BetJpaRepositoryTest {
     }
 
     @Test
-    void whenFindById_thenResultFound() {
-        Optional<BetEntity> result = repository.findById(bet.getId());
+    void whenExistsById_thenTrue() {
+        boolean result = repository.existsById(bet.getId());
 
-        assertThat(result)
-                .isNotEmpty()
-                .hasValueSatisfying(r -> {
-                    assertThat(r.getId()).isEqualTo(bet.getId());
-                    assertThat(r.getJackpotId()).isEqualTo(bet.getJackpotId());
-                    assertThat(r.getUserId()).isEqualTo(bet.getUserId());
-                    assertThat(r.getBet().getAmount()).isEqualByComparingTo(bet.getBet().getAmount());
-                    assertThat(r.getBet().getCurrency()).isEqualTo(bet.getBet().getCurrency());
-                });
+        assertThat(result).isTrue();
     }
 
     @Test

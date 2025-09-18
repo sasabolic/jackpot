@@ -17,12 +17,17 @@ public class BetRepositoryAdapter implements BetRepository {
     private final BetJpaRepository repository;
 
     @Override
-    public void save(Bet bet) {
-        repository.save(BetMapper.toEntity(bet));
+    public Optional<Bet> findById(BetId id) {
+        return repository.findById(id.value()).map(BetMapper::toDomain);
     }
 
     @Override
-    public Optional<Bet> findById(BetId id) {
-        return repository.findById(id.value()).map(BetMapper::toDomain);
+    public boolean existsById(BetId id) {
+        return repository.existsById(id.value());
+    }
+
+    @Override
+    public void save(Bet bet) {
+        repository.save(BetMapper.toEntity(bet));
     }
 }

@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface BetRepository {
     Optional<Bet> findById(BetId id);
 
+    boolean existsById(BetId id);
+
     void save(Bet bet);
 
 }
