@@ -6,6 +6,13 @@ import com.example.jackpot.domain.model.vo.Money;
 import static com.example.jackpot.domain.common.DomainAssertions.isTrue;
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Input data for jackpot contribution strategies.
+ *
+ * @param betAmount   the stake placed by the player
+ * @param currentPool the jackpot pool before applying this bet
+ * @param initialPool the pool at the start of the current cycle
+ */
 public record ContributionContext(Money betAmount, Money currentPool, Money initialPool) {
     public ContributionContext {
         requireNonNull(betAmount, "betAmount must not be null");

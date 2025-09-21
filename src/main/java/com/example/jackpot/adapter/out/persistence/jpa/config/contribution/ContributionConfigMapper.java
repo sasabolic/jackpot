@@ -15,7 +15,7 @@ public final class ContributionConfigMapper {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private ContributionConfigMapper() {
-        throw new AssertionError("No instances of %s for you".formatted(this.getClass().getSimpleName()));
+        throw new AssertionError("No instances of %s for you".formatted(this.getClass()));
     }
 
     public static ContributionCalculator toDomain(String json) {
@@ -42,7 +42,7 @@ public final class ContributionConfigMapper {
                 default -> throw new IllegalArgumentException("Unsupported contribution type: '%s'".formatted(type));
             };
         } catch (JsonProcessingException e) {
-            throw new IllegalStateException("Failed to parse reward config JSON", e);
+            throw new IllegalStateException("Failed to parse contribution config JSON", e);
         }
     }
 }

@@ -15,7 +15,7 @@ public final class RewardConfigMapper {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private RewardConfigMapper() {
-        throw new AssertionError("No instances of %s for you".formatted(this.getClass().getSimpleName()));
+        throw new AssertionError("No instances of %s for you".formatted(this.getClass()));
     }
 
     public static RewardEvaluator toDomain(String json) {

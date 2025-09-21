@@ -11,37 +11,39 @@ spring:
 
 # H2 database and test data
 spring.datasource:
-    url: jdbc:h2:mem:jackpot;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+  url: jdbc:h2:mem:jackpot;DB_CLOSE_DELAY=-1
+  driver-class-name: org.h2.Driver
+  username: sa
+  password:
 spring.h2:
-    console:
-      enabled: true
-      path: /h2-console
+  console:
+    enabled: true
+    path: /h2-console
 spring.jpa:
-    show-sql: false
-    defer-datasource-initialization: true
-    hibernate:
-      ddl-auto: create-drop
+  show-sql: false
+  defer-datasource-initialization: true
+  hibernate:
+    ddl-auto: create-drop
 spring.sql:
-    init:
-      mode: always
+  init:
+    mode: always
 
 # Kafka messaging
 spring.kafka:
-    bootstrap-servers: localhost:49092
-    consumer:
-      group-id: jackpot-processing-group
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: "com.example.jackpot*"
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  bootstrap-servers: localhost:49092
+  consumer:
+    group-id: jackpot-processing-group
+    auto-offset-reset: earliest
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    properties:
+      spring.json.trusted.packages: "com.example.jackpot.*"
+  producer:
+    properties.enable.idempotence: true
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
-kafka:
-  topic:
-    bets: jackpot-bets
+jackpot:
+  kafka:
+    topic:
+      bets: jackpot-bets

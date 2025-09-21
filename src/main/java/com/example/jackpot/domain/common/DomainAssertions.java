@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 public final class DomainAssertions {
 
     private DomainAssertions() {
-        throw new AssertionError("No instances of %s for you".formatted(this.getClass().getSimpleName()));
+        throw new AssertionError("No instances of %s for you".formatted(this.getClass()));
     }
 
     public static void isTrue(boolean condition, String message) {

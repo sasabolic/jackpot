@@ -22,8 +22,8 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@EmbeddedKafka(partitions = 1, topics = { "jackpot-bets" })
+@SpringBootTest(properties = "spring.kafka.listener.auto-startup=false")
+@EmbeddedKafka(partitions = 1, topics = {"jackpot-bets"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class KafkaBetProducerTest {
 

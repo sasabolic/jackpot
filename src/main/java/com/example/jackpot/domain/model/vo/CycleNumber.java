@@ -20,9 +20,13 @@ public final class CycleNumber {
         this.value = value;
     }
 
-    public static CycleNumber of(int v) { return new CycleNumber(v); }
+    public static CycleNumber of(int v) {
+        return new CycleNumber(v);
+    }
 
-    public CycleNumber next() { return new CycleNumber(value + 1); }
+    public CycleNumber next() {
+        return new CycleNumber(value + 1);
+    }
 
     public int value() {
         return value;

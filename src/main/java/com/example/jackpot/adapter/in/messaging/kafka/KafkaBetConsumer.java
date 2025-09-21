@@ -18,7 +18,7 @@ public class KafkaBetConsumer implements BetConsumer {
     private final BetProcessingService betProcessingService;
 
     @KafkaListener(
-            topics = "${kafka.topic.bets:jackpot-bets}",
+            topics = "${jackpot.kafka.topic.bets:jackpot-bets}",
             groupId = "${spring.kafka.consumer.group-id:jackpot-bet-processing-group}"
     )
     @Override

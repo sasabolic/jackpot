@@ -9,7 +9,7 @@ import com.example.jackpot.domain.model.id.UserId;
 public final class BetMapper {
 
     private BetMapper() {
-        throw new AssertionError("No instances of %s for you".formatted(this.getClass().getSimpleName()));
+        throw new AssertionError("No instances of %s for you".formatted(this.getClass()));
     }
 
     public static Bet toDomain(BetEntity entity) {

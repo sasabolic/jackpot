@@ -9,7 +9,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "jackpot_contribution",
         uniqueConstraints = @UniqueConstraint(name = "uq_contribution_bet_user_jackpot",
-        columnNames = {"bet_id","user_id","jackpot_id"})
+                columnNames = {"bet_id", "user_id", "jackpot_id"})
 )
 public class JackpotContributionEntity implements Persistable<UUID> {
     @Id
@@ -28,9 +28,9 @@ public class JackpotContributionEntity implements Persistable<UUID> {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumns(
             value = {
-                    @JoinColumn(name = "bet_id",     referencedColumnName = "id",        insertable = false, updatable = false),
-                    @JoinColumn(name = "user_id",    referencedColumnName = "user_id",   insertable = false, updatable = false),
-                    @JoinColumn(name = "jackpot_id", referencedColumnName = "jackpot_id",insertable = false, updatable = false)
+                    @JoinColumn(name = "bet_id", referencedColumnName = "id", insertable = false, updatable = false),
+                    @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false),
+                    @JoinColumn(name = "jackpot_id", referencedColumnName = "jackpot_id", insertable = false, updatable = false)
             },
             foreignKey = @ForeignKey(name = "fk_contribution_bet_user_jackpot")
     )

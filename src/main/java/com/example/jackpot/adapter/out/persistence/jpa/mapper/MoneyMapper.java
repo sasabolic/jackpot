@@ -8,7 +8,7 @@ import java.util.Currency;
 public final class MoneyMapper {
 
     private MoneyMapper() {
-        throw new AssertionError("No instances of %s for you".formatted(this.getClass().getSimpleName()));
+        throw new AssertionError("No instances of %s for you".formatted(this.getClass()));
     }
 
     public static Money toDomain(MoneyEmbeddable e) {

@@ -2,7 +2,7 @@ package com.example.jackpot.adapter.out.persistence;
 
 import com.example.jackpot.adapter.out.persistence.jpa.entity.JackpotRewardEntity;
 import com.example.jackpot.adapter.out.persistence.jpa.entity.MoneyEmbeddable;
-import com.example.jackpot.adapter.out.persistence.jpa.repostiory.RewardJpaRepository;
+import com.example.jackpot.adapter.out.persistence.jpa.repository.RewardJpaRepository;
 import com.example.jackpot.domain.model.JackpotReward;
 import com.example.jackpot.domain.model.id.BetId;
 import com.example.jackpot.domain.model.id.JackpotId;

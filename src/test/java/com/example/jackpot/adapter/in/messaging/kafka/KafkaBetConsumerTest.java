@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -20,12 +21,15 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.timeout;
 
 @SpringBootTest
-@EmbeddedKafka(partitions = 1, topics = { "jackpot-bets" })
+@EmbeddedKafka(partitions = 1, topics = {"jackpot-bets"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class KafkaBetConsumerTest {
 
     @Autowired
     private KafkaTemplate<String, BetMessage> kafkaTemplate;
+
+    @MockitoSpyBean
+    private KafkaBetConsumer betConsumer;
 
     @MockitoBean
     private BetProcessingService betProcessingService;
@@ -42,6 +46,8 @@ class KafkaBetConsumerTest {
         );
 
         kafkaTemplate.send("jackpot-bets", jackpotId.toString(), message);
+
+        then(betConsumer).should(timeout(2000)).onMessage(message);
 
         ArgumentCaptor<Bet> captor = ArgumentCaptor.forClass(Bet.class);
         then(betProcessingService).should(timeout(3000)).process(captor.capture());

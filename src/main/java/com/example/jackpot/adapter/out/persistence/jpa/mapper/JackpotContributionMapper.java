@@ -6,7 +6,7 @@ import com.example.jackpot.domain.model.JackpotContribution;
 public final class JackpotContributionMapper {
 
     private JackpotContributionMapper() {
-        throw new AssertionError("No instances of %s for you".formatted(this.getClass().getSimpleName()));
+        throw new AssertionError("No instances of %s for you".formatted(this.getClass()));
     }
 
     public static JackpotContributionEntity toEntity(JackpotContribution contribution) {

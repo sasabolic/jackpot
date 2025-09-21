@@ -145,7 +145,7 @@ class VariableChanceRewardEvaluatorTest {
         Percentage minPercent = validMinPercent();
         Percentage maxPercent = validMaxPercent();
         Money minPool = Money.of("50.00", "EUR");
-        Money maxPool =  Money.of("100.00", "USD");
+        Money maxPool = Money.of("100.00", "USD");
 
         assertThatThrownBy(() -> new VariableChanceRewardEvaluator(minPercent, maxPercent, minPool, maxPool))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -157,18 +157,19 @@ class VariableChanceRewardEvaluatorTest {
         Percentage minPercent = validMinPercent();
         Percentage maxPercent = validMaxPercent();
         Money minPool = Money.of("100.01", "EUR");
-        Money maxPool =  Money.of("100.00", "EUR");
+        Money maxPool = Money.of("100.00", "EUR");
 
         assertThatThrownBy(() -> new VariableChanceRewardEvaluator(minPercent, maxPercent, minPool, maxPool))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("maxPool must be >= minPool");
     }
+
     @Test
     void whenNewInstance_thenFieldsAreWired() {
         Percentage minPercent = validMinPercent();
         Percentage maxPercent = validMaxPercent();
         Money minPool = validMinPool();
-        Money maxPool =  validMaxPool();
+        Money maxPool = validMaxPool();
 
         VariableChanceRewardEvaluator result = new VariableChanceRewardEvaluator(minPercent, maxPercent, minPool, maxPool);
 
@@ -188,7 +189,7 @@ class VariableChanceRewardEvaluatorTest {
         Percentage minPercent = validMinPercent();
         Percentage maxPercent = validMaxPercent();
         Money minPool = validMinPool();
-        Money maxPool =  validMaxPool();
+        Money maxPool = validMaxPool();
 
         VariableChanceRewardEvaluator evaluator = new VariableChanceRewardEvaluator(minPercent, maxPercent, minPool, maxPool);
 
@@ -202,7 +203,7 @@ class VariableChanceRewardEvaluatorTest {
         Percentage minPercent = validMinPercent();
         Percentage maxPercent = validMaxPercent();
         Money minPool = validMinPool();
-        Money maxPool =  validMaxPool();
+        Money maxPool = validMaxPool();
 
         VariableChanceRewardEvaluator evaluator = new VariableChanceRewardEvaluator(minPercent, maxPercent, minPool, maxPool);
 

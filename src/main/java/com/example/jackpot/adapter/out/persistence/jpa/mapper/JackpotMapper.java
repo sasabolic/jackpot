@@ -10,7 +10,7 @@ import com.example.jackpot.domain.model.vo.CycleNumber;
 public final class JackpotMapper {
 
     private JackpotMapper() {
-        throw new AssertionError("No instances of %s for you".formatted(this.getClass().getSimpleName()));
+        throw new AssertionError("No instances of %s for you".formatted(this.getClass()));
     }
 
     public static Jackpot toDomain(JackpotEntity entity) {

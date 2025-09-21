@@ -1,7 +1,7 @@
 package com.example.jackpot.adapter.out.persistence;
 
 import com.example.jackpot.adapter.out.persistence.jpa.mapper.JackpotRewardMapper;
-import com.example.jackpot.adapter.out.persistence.jpa.repostiory.RewardJpaRepository;
+import com.example.jackpot.adapter.out.persistence.jpa.repository.RewardJpaRepository;
 import com.example.jackpot.application.port.out.JackpotRewardRepository;
 import com.example.jackpot.domain.model.JackpotReward;
 import com.example.jackpot.domain.model.id.BetId;

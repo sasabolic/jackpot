@@ -1,4 +1,4 @@
-package com.example.jackpot.adapter.out.persistence.jpa.repostiory;
+package com.example.jackpot.adapter.out.persistence.jpa.repository;
 
 import com.example.jackpot.adapter.out.persistence.jpa.entity.JackpotEntity;
 import com.example.jackpot.adapter.out.persistence.jpa.entity.MoneyEmbeddable;
