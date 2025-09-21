@@ -14,6 +14,23 @@ import static java.util.Objects.requireNonNull;
 /**
  * Computes a <b>variable contribution</b> (as a percentage of the bet amount) that
  * starts high and linearly decays as the jackpot pool grows, but never below {@code minimumRate}.
+ *
+ * <p><b>Formula:</b></p>
+ * <pre>
+ * contribution = betAmount × rate
+ *
+ * where:
+ *   rate = max(minimumRate, startingRate − decayFactor × (currentPool − initialPool))
+ * </pre>
+ *
+ * <p>This ensures that:</p>
+ * <ul>
+ *   <li>The contribution rate starts at {@code startingRate}</li>
+ *   <li>It decreases linearly as the pool grows</li>
+ *   <li>It never drops below {@code minimumRate}</li>
+ * </ul>
+ *
+ * <p>All percentages are expressed as {@link Percentage} value objects, and monetary values as {@link Money}.</p>
  */
 public class VariableContributionCalculator implements ContributionCalculator {
     private final Percentage startingRate;

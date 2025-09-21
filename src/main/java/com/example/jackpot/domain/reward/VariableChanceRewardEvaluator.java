@@ -18,6 +18,27 @@ import static java.util.Objects.requireNonNull;
  * The chance starts at {@code minPercent} and stays with this value until {@code minPool} is reached,
  * after that it grows linearly towards {@code maxPercent} as the pool approaches a hard cap {@code maxPool}.
  * Once the current pool is at or above the cap, the outcome is a guaranteed win.
+ * </p>
+ *
+ * <p><b>Formula:</b></p>
+ * <pre>
+ * if (currentPool >= maxPool)
+ *     win = true
+ * else if (currentPool <= minPool)
+ *     win = (random < minPercent)
+ * else
+ *     ratio = (currentPool − minPool) / (maxPool − minPool)
+ *     chance = minPercent + (maxPercent − minPercent) × ratio
+ *     win = (random < chance)
+ * </pre>
+ *
+ * <p>Where {@code random} is a double in [0.0, 1.0) supplied by {@link DoubleSupplier}, and {@code chance} is
+ * the interpolated probability based on the current pool size.</p>
+ *
+ * <p>This evaluator is ideal for progressive jackpot models, where the likelihood of winning increases as the pool grows,
+ * creating tension and incentive for continued betting.</p>
+ *
+ * <p>All monetary values are represented using {@link Money}, and percentage values using {@link Percentage}.</p>
  */
 @Slf4j
 public class VariableChanceRewardEvaluator implements RewardEvaluator {

@@ -11,6 +11,23 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * Evaluates a jackpot win using a <b>fixed probability</b> expressed as a {@link Percentage}.
+ *
+ * <p><b>Formula:</b></p>
+ * <pre>
+ * win = (random number) < chance
+ * </pre>
+ *
+ * <p>Where:</p>
+ * <ul>
+ *   <li>{@code chance} is a fixed {@link Percentage} between 0% and 100%</li>
+ *   <li>{@code random number} is a double in the range [0.0, 1.0), supplied by {@link DoubleSupplier}</li>
+ * </ul>
+ *
+ * <p>If {@code chance} is 100%, the outcome is guaranteed to win.
+ * Otherwise, the evaluator compares a random number against the fractional value of {@code chance}.</p>
+ *
+ * <p>This strategy is useful for static reward models where every bet has the same probability of winning,
+ * regardless of jackpot pool size or history.</p>
  */
 public final class FixedChanceRewardEvaluator implements RewardEvaluator {
     private final Percentage chance;

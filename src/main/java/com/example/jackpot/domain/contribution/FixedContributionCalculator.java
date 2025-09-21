@@ -10,6 +10,18 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * Computes a <b>fixed contribution</b> to the jackpot as a constant percentage of the bet amount.
+ *
+ * <p><b>Formula:</b></p>
+ * <pre>
+ * contribution = betAmount × rate
+ * </pre>
+ *
+ * <p>Where {@code rate} is a fixed {@link Percentage} configured at construction time.</p>
+ *
+ * <p>This calculator applies the same contribution rate regardless of jackpot pool size or bet history.
+ * It is simple, predictable, and useful for flat-rate jackpot models.</p>
+ *
+ * <p>All monetary values are represented using {@link Money}, and percentage values using {@link Percentage}.</p>
  */
 public class FixedContributionCalculator implements ContributionCalculator {
     private final Percentage rate;
