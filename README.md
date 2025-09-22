@@ -1,6 +1,6 @@
 # Jackpot Service
 
-A Spring Boot (Java 21) service that simulates a jackpot system. It records incoming bets, contributes a portion of them to a jackpot pool, and evaluates rewards using configurable contribution/reward models.
+A Spring Boot service that simulates a jackpot system. It records incoming bets, contributes a portion of them to a jackpot pool, and evaluates rewards using configurable contribution/reward models.
 
 ---
 
@@ -28,7 +28,7 @@ This model evaluates whether a bet wins a reward and calculates the chance of wi
 
 ## 🧱 Tech Stack
 
-- **Java** 21, **Spring Boot** 3.5.x
+- **Java** 25, **Spring Boot** 3.5.x
 - Spring Kafka for asynchronous messaging, event-driven communication
 - H2 Database for in‑memory persistence
 - Lombok for boilerplate code reduction
@@ -37,7 +37,8 @@ This model evaluates whether a bet wins a reward and calculates the chance of wi
 
 ---
 
-## 📦 Project Layout (Hexagonal)
+## 📦 Project Layout
+This project follows **Hexagonal Architecture (Ports & Adapters)** to keep business logic independent from frameworks.
 
 ```
 jackpot/
@@ -68,10 +69,10 @@ jackpot/
 ## ▶️ Quickstart
 
 ### Prerequisites
-- JDK 21+
-- Docker (for Kafka)
+- [Java 25+]
+- [Docker]
 
-### 1) Start Kafka (docker compose)
+### 1) Start Kafka
 From the project's root folder, start the Kafka broker using Docker:
 ```bash
 docker compose up -d
@@ -119,15 +120,29 @@ The configuration for each model is stored as a JSON payload in the database.
 
 * **Fixed Contribution Example:**
     ```json
-    { "type": "FIXED", "schemaVersion": 1, "config": { "rate": "5.00" } }
+    {
+      "type": "FIXED",
+      "schemaVersion": 1,
+      "config": {
+        "rate": "5.00"
+      }
+    }
     ```
 * **Variable Chance Reward Example:**
     ```json
-    { "type": "VARIABLE_CHANCE", "schemaVersion": 1,
+    {
+      "type": "VARIABLE_CHANCE",
+      "schemaVersion": 1,
       "config": {
         "startPercent": "2.50",
-        "minPool": { "amount": "100.00", "currency": "EUR" },
-        "maxPool": { "amount": "1500.00", "currency": "EUR" }
+        "minPool": {
+          "amount": "100.00",
+          "currency": "EUR"
+        },
+        "maxPool": {
+          "amount": "1500.00",
+          "currency": "EUR"
+        }
       }
     }
     ```
@@ -148,7 +163,7 @@ Request body example:
   "userId":    "b4019a2c-d1a2-4d18-ae8d-3e6a734f60a0",
   "jackpotId": "11111111-1111-1111-1111-111111111111",
   "betAmount": { 
-    "amount": "10.00", 
+    "amount": "100.00", 
     "currency": "EUR"
   }
 }
@@ -227,11 +242,12 @@ All models validate invariants (positive amounts, same currencies, ranges, etc.)
 
 ---
 
-## 📫 End‑to‑end demo (quick)
+## 📫 End‑to‑end demo
 
 ```bash
 # Start Kafka and the app
 docker compose up -d
+
 ./gradlew bootRun
 
 # Place a bet
@@ -239,9 +255,12 @@ curl -i -X POST http://localhost:8080/api/bets   -H 'Content-Type: application/j
         "betId":"00000000-0000-0000-0000-000000000001",
         "userId":"00000000-0000-0000-0000-000000000002",
         "jackpotId":"11111111-1111-1111-1111-111111111111",
-        "betAmount":{"amount":"10.00","currency":"EUR"}
+        "betAmount":{"amount":"100.00","currency":"EUR"}
       }'
 
 # Later, check reward
 curl -s http://localhost:8080/api/bets/00000000-0000-0000-0000-000000000001/reward | jq .
 ```
+
+[Java 25+]: https://sdkman.io/jdks
+[Docker]: https://docs.docker.com/install/

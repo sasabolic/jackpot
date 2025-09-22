@@ -3,6 +3,7 @@ package com.example.jackpot.domain.model.id;
 import com.example.jackpot.domain.exception.InvalidUserIdException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import static com.example.jackpot.domain.common.DomainAssertions.isTrue;
 /**
  * An user identifier.
  */
+@Slf4j
 @ToString
 @EqualsAndHashCode
 public final class UserId {
@@ -29,7 +31,8 @@ public final class UserId {
 
         try {
             return new UserId(UUID.fromString(value));
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ex) {
+            log.warn("Failed to parse value {}", value, ex);
             throw new InvalidUserIdException("Invalid UUID format: %s".formatted(value));
         }
     }

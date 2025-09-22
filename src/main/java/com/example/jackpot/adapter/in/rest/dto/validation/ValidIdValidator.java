@@ -2,9 +2,11 @@ package com.example.jackpot.adapter.in.rest.dto.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
 
+@Slf4j
 public class ValidIdValidator implements ConstraintValidator<ValidId, String> {
 
     @Override
@@ -21,7 +23,8 @@ public class ValidIdValidator implements ConstraintValidator<ValidId, String> {
         try {
             UUID.fromString(value);
             return true;
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ex) {
+            log.warn("Failed to parse value {}", value, ex);
             return false;
         }
     }
